@@ -13,10 +13,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Configuration
+@Configuration  // 얘가 있어야 중요한 컴포넌트임을 알 수 있음.
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecureConfig {
+public class SecurityConfig {
     @Value("${familyCard.server.domain}")
     private String serverDomain;
 
