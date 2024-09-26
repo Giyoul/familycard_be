@@ -28,7 +28,8 @@ public class History {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private int menu_id;
+    @Column(insertable = true, updatable = true, nullable = false)
+    private int historyMenuId;
 
     private Date historyDate;
 
