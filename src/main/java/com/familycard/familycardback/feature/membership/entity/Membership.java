@@ -21,7 +21,7 @@ public class Membership {
     @Column(name = "id", nullable = false, columnDefinition = "INT")
     private int id;
 
-    @OneToMany(mappedBy = "membership", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "membership", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false)
     @JsonIgnore
     private List<User> userList;
 

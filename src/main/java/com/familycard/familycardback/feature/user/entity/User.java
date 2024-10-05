@@ -29,7 +29,7 @@ public class User {
     private List<History> historyList;
 
     @ManyToOne
-    @JoinColumn(name = "mambership_id")
+    @JoinColumn(name = "mambership_id", nullable = true)
     private Membership membership;
 
     private String serialNumber;
