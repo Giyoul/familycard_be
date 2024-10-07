@@ -31,6 +31,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(apiKeyInterceptor)
                 .addPathPatterns("/**") // 모든 경로에 인터셉터 적용
-                .excludePathPatterns("/health"); // 상태체크는 예외
+                .excludePathPatterns("/health", "/swagger-ui/**", "/v3/api-docs/**"); // 상태체크는 예외
     }
 }

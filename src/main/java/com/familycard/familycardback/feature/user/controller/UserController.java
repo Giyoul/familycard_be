@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
     @GetMapping("")
     @Operation(summary = "유저 데이터 페이지 별로 가져오기", description = "페이지 번호와, header에 key값을 보내주면 validation check 후에 해당 페이지의 유저 데이터를 가져옵니다.")
