@@ -2,6 +2,7 @@ package com.familycard.familycardback.feature.user.controller;
 
 import com.familycard.familycardback.feature.user.repository.UserRepository;
 import com.familycard.familycardback.feature.user.service.UserService;
+import com.familycard.familycardback.global.handler.GlobalExceptionHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
