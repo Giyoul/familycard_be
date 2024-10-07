@@ -3,7 +3,6 @@ package com.familycard.familycardback.feature.user.entity;
 import com.familycard.familycardback.feature.history.entity.History;
 import com.familycard.familycardback.feature.membership.entity.Membership;
 import com.familycard.familycardback.feature.menu.entity.Menu;
-import com.familycard.familycardback.feature.ncmn.entity.Ncmn;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

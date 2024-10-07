@@ -3,7 +3,6 @@ package com.familycard.familycardback.feature.franchise.entity;
 import com.familycard.familycardback.feature.franchise.dto.request.FranchiseRequestDto;
 import com.familycard.familycardback.feature.history.entity.History;
 import com.familycard.familycardback.feature.menu.entity.Menu;
-import com.familycard.familycardback.feature.ncmn.entity.Ncmn;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,10 +22,6 @@ public class Franchise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "INT")
     private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "ncmn_id")
-    private Ncmn ncmn;
 
     @OneToMany(mappedBy = "franchise", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

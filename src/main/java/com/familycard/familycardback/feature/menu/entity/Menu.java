@@ -1,7 +1,6 @@
 package com.familycard.familycardback.feature.menu.entity;
 
 import com.familycard.familycardback.feature.franchise.entity.Franchise;
-import com.familycard.familycardback.feature.ncmn.entity.Ncmn;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
