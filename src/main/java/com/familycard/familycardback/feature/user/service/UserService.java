@@ -4,10 +4,14 @@ import com.familycard.familycardback.feature.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     public final UserRepository userRepository;
 
-    public findUserByPageId
+    public static List<?> findUserByPageId(int page_id) {
+        return null;
+    }
 }
