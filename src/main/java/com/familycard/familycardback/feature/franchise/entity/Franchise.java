@@ -1,5 +1,6 @@
 package com.familycard.familycardback.feature.franchise.entity;
 
+import com.familycard.familycardback.feature.franchise.dto.request.FranchiseRequestDto;
 import com.familycard.familycardback.feature.history.entity.History;
 import com.familycard.familycardback.feature.menu.entity.Menu;
 import com.familycard.familycardback.feature.ncmn.entity.Ncmn;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -35,4 +37,12 @@ public class Franchise {
     private List<History> historyList;
 
     private String franchiseName;
+
+    public Franchise(FranchiseRequestDto.AddFranchise request) {
+        this.franchiseName = request.getFranchiseName();
+        // 메뉴 리스트를 받아서 각각의 Menu 객체로 변환하여 추가
+        this.menuList = request.getMenuList().stream()
+                .map(menuInfo -> new Menu(this, menuInfo.getMenuName(), menuInfo.getMenuPrice()))
+                .collect(Collectors.toList());
+    }
 }

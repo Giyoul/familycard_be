@@ -24,13 +24,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.viewResolver(resolver);
     }
 
-    @Autowired
-    private ApiKeyIntercepter apiKeyInterceptor;
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(apiKeyInterceptor)
-                .addPathPatterns("/**") // 모든 경로에 인터셉터 적용
-                .excludePathPatterns("/health", "/swagger-ui/**", "/v3/api-docs/**"); // 상태체크는 예외
-    }
+    // 아래가 intercepter
+//    @Autowired
+//    private ApiKeyIntercepter apiKeyInterceptor;
+//
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(apiKeyInterceptor)
+//                .addPathPatterns("/**") // 모든 경로에 인터셉터 적용
+//                .excludePathPatterns("/health", "/swagger-ui/**", "/v3/api-docs/**"); // 상태체크는 예외
+//    }
 }

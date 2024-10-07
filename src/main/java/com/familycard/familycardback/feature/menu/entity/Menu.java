@@ -28,4 +28,10 @@ public class Menu {
     private String menuName;
 
     private String menuPrice;
+
+    public Menu(Franchise franchise, String menuName, String menuPrice) {
+        this.franchise = franchise;
+        this.menuName = menuName;
+        this.menuPrice = menuPrice;
+    }
 }
