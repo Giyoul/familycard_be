@@ -33,11 +33,14 @@ public class Franchise {
 
     private String franchiseName;
 
+    private boolean franchiseAffiliated;
+
     public Franchise(FranchiseRequestDto.AddFranchise request) {
         this.franchiseName = request.getFranchiseName();
         // 메뉴 리스트를 받아서 각각의 Menu 객체로 변환하여 추가
         this.menuList = request.getMenuList().stream()
                 .map(menuInfo -> new Menu(this, menuInfo.getMenuName(), menuInfo.getMenuPrice()))
                 .collect(Collectors.toList());
+        this.franchiseAffiliated = true;
     }
 }
