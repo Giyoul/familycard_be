@@ -40,4 +40,15 @@ public class FranchiseController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
+
+    @GetMapping("")
+    @Operation(summary = "가맹점 전체 불러오기", description = "가맹점 전체의 아이디와 이름을 불러옵니다.")
+    public ResponseEntity<?> getAllFranchises(HttpServletResponse key) {
+        try {
+            List<?> response = franchiseService.getAllFranchise();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
 }

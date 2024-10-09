@@ -1,11 +1,13 @@
 package com.familycard.familycardback.feature.franchise.service;
 
 import com.familycard.familycardback.feature.franchise.dto.request.FranchiseRequestDto;
+import com.familycard.familycardback.feature.franchise.dto.response.FranchiseResponseDto;
 import com.familycard.familycardback.feature.franchise.entity.Franchise;
 import com.familycard.familycardback.feature.franchise.repository.FranchiseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -31,5 +33,11 @@ public class FranchiseService {
         } else {
             throw new Exception("There is no franchise with this name");
         }
+    }
+
+    public List<?> getAllFranchise(){
+        List<FranchiseResponseDto.GetFranchiseResponse> responses = franchiseRepository.findAll()
+                .stream().map(franchise -> new FranchiseResponseDto.GetFranchiseResponse(franchise.getId(), franchise.getFranchiseName())).toList();
+        return responses;
     }
 }
