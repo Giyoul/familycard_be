@@ -1,5 +1,6 @@
 package com.familycard.familycardback.feature.user.controller;
 
+import com.familycard.familycardback.feature.user.dto.request.UserRequestDto;
 import com.familycard.familycardback.feature.user.repository.UserRepository;
 import com.familycard.familycardback.feature.user.service.UserService;
 import com.familycard.familycardback.global.handler.GlobalExceptionHandler;
@@ -8,10 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,13 +17,25 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
+    private final UserService userService;
+
     @GetMapping("")
     @Operation(summary = "유저 데이터 페이지 별로 가져오기", description = "페이지 번호와, header에 key값을 보내주면 validation check 후에 해당 페이지의 유저 데이터를 가져옵니다.")
     public ResponseEntity<?> findUserByPage(@RequestParam int page_id, HttpServletResponse key) {
-        List<?> responseDto;
         try {
-            responseDto = UserService.findUserByPageId(page_id);
+            List<?> responseDto = userService.findUserByPageId(page_id);
             return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("")
+    @Operation(summary = "후언자 정보 업데이트 & 추가 기능", description = "사용자 정보를 List로 넘겨주면 해당 serialNumber의 사용자가 있으면 해당 정보로 수정해주고, 없으면 추가해줍니다.")
+    public ResponseEntity<?> updateUserBySerialNumber(@RequestBody UserRequestDto.UpdateUserRequest request, HttpServletResponse key) {
+        try {
+            userService.updateUserBySerialNumber(request);
+            return ResponseEntity.status(HttpStatus.OK).body("Update User info Success!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }

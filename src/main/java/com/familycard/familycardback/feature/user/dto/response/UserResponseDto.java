@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.Date;
 
-public class userResponseDto {
+public class UserResponseDto {
 
     @Getter
     @Setter
