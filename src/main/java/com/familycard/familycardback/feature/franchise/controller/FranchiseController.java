@@ -29,4 +29,15 @@ public class FranchiseController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
+
+    @PutMapping("")
+    @Operation(summary = "가맹 상태 변동시키기", description = "가맹시킬지 말지 status를 변동시킨다.")
+    public ResponseEntity<?> updateFranchiseStatus(@RequestBody FranchiseRequestDto.changeFranchiseStatus request, HttpServletResponse key) {
+        try {
+            franchiseService.updateFranchiseStatus(request);
+            return ResponseEntity.status(HttpStatus.OK).body("Franchise Status Update Success!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
 }

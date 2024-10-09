@@ -33,7 +33,7 @@ public class Franchise {
 
     private String franchiseName;
 
-    private boolean franchiseAffiliated;
+    private Boolean franchiseAffiliated;
 
     public Franchise(FranchiseRequestDto.AddFranchise request) {
         this.franchiseName = request.getFranchiseName();
@@ -42,5 +42,9 @@ public class Franchise {
                 .map(menuInfo -> new Menu(this, menuInfo.getMenuName(), menuInfo.getMenuPrice()))
                 .collect(Collectors.toList());
         this.franchiseAffiliated = true;
+    }
+
+    public void changeFranchiseAffiliated(Boolean affiliated) {
+        this.franchiseAffiliated = affiliated;
     }
 }

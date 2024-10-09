@@ -13,4 +13,11 @@ public class FranchiseRequestDto {
         private String franchiseName;
         private List<MenuRequestDto.MenuInfo> menuList;
     }
+
+    @Getter
+    @Setter
+    public static class changeFranchiseStatus{
+        private String franchiseName;
+        private boolean franchiseAffiliated;
+    }
 }
