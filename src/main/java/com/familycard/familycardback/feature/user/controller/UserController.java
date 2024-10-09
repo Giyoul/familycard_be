@@ -1,6 +1,7 @@
 package com.familycard.familycardback.feature.user.controller;
 
 import com.familycard.familycardback.feature.user.dto.request.UserRequestDto;
+import com.familycard.familycardback.feature.user.dto.response.UserResponseDto;
 import com.familycard.familycardback.feature.user.repository.UserRepository;
 import com.familycard.familycardback.feature.user.service.UserService;
 import com.familycard.familycardback.global.handler.GlobalExceptionHandler;
@@ -23,7 +24,7 @@ public class UserController {
     @Operation(summary = "유저 데이터 페이지 별로 가져오기", description = "페이지 번호와, header에 key값을 보내주면 validation check 후에 해당 페이지의 유저 데이터를 가져옵니다.")
     public ResponseEntity<?> findUserByPage(@RequestParam int page_id, HttpServletResponse key) {
         try {
-            List<?> responseDto = userService.findUserByPageId(page_id);
+            List<?> responseDto = userService.findUserByPageIdInShort(page_id);
             return ResponseEntity.status(HttpStatus.OK).body(responseDto);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
@@ -36,6 +37,17 @@ public class UserController {
         try {
             userService.updateUserBySerialNumber(request);
             return ResponseEntity.status(HttpStatus.OK).body("Update User info Success!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{page_id}")
+    @Operation(summary = "페이지 번호로 유저 정보 가져오는 기능", description = "pathVariable로 페이지의 번호를 보내주면 해당 페이지의 user 정보를 list로 가져올 수 있습니다.")
+    public ResponseEntity<?> getUserByPageId(@PathVariable int page_id, HttpServletResponse key) {
+        try {
+            List<UserResponseDto.findUserByPageId> response = userService.findUserByPageId(page_id);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
