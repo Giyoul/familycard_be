@@ -52,6 +52,8 @@ public class User {
 
     private String QRURL;
 
+    private Boolean isActive;
+
     public void updateUserInfo(UserRequestDto.UpdateUserRequestInfo request, Membership membership) {
         this.serialNumber = request.getSerialNumber();
         this.issueDate = request.getIssueDate();
@@ -62,6 +64,7 @@ public class User {
         this.photoFileName = request.getPhotoFileName();
         this.birthDay = request.getBirthDay();
         this.QRURL = request.getQRURL();
+        this.isActive = request.getIsActive();
         this.membership = membership;
     }
 }

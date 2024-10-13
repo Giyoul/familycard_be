@@ -26,5 +26,6 @@ public class UserRequestDto {
         private Date birthDay;
         private String QRURL;
         private String membershipName;
+        private Boolean isActive;
     }
 }

@@ -8,6 +8,7 @@ import com.familycard.familycardback.global.handler.GlobalExceptionHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @PutMapping("")
-    @Operation(summary = "후언자 정보 업데이트 & 추가 기능", description = "사용자 정보를 List로 넘겨주면 해당 serialNumber의 사용자가 있으면 해당 정보로 수정해주고, 없으면 추가해줍니다.")
+    @Operation(summary = "후원자 정보 업데이트 & 추가 기능", description = "사용자 정보를 List로 넘겨주면 해당 serialNumber의 사용자가 있으면 해당 정보로 수정해주고, 없으면 추가해줍니다.")
     public ResponseEntity<?> updateUserBySerialNumber(@RequestBody UserRequestDto.UpdateUserRequest request, HttpServletResponse key) {
         try {
             userService.updateUserBySerialNumber(request);
