@@ -9,6 +9,7 @@ import com.familycard.familycardback.feature.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final MembershipRepository membershipRepository;
 
-    public List<?> findUserByPageIdInShort(int page_id) {
-        return null;
+    public List<UserResponseDto.findUserByPageIdInShort> findUserByPageIdInShort(int page_id) {
+        int pageSize = 20; // 페이지당 20명씩
+        Pageable pageable = PageRequest.of(page_id - 1, pageSize, Sort.by("issueDate").descending());
+        List<User> userList = userRepository.findByIssueDateIsNotNullOrderByIssueDateDesc(pageable);
+        return userList.stream()
+                .map(UserResponseDto.findUserByPageIdInShort::new)
+                .toList();
     }
 
     public void updateUserBySerialNumber(UserRequestDto.UpdateUserRequest request) throws Exception{
@@ -51,10 +57,9 @@ public class UserService {
         int page = page_id - 1;
         Pageable pageable = PageRequest.of(page, 4);
         List<User> userList = userRepository.findByOrderByIdDesc(pageable);
-        List<UserResponseDto.findUserByPageId> response = userList.stream()
+        return userList.stream()
                 .map(UserResponseDto.findUserByPageId::new)
                 .toList();
-        return response;
     }
 
 }

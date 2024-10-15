@@ -21,6 +21,17 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("/short/{page_id}")
+    @Operation(summary = "전체 통계보기 페이지에서 마지막 사용일자를 기준으로 유저 데이터 가져오기", description = "유저가 혜택을 사용할 날짜를 기준으로 소트해서 가장 최근에 사용한 유저부터 순서대로 sort해서 내용을 보내줍니다.")
+    public ResponseEntity<?> finUserByPageSortByIssueDate(@PathVariable int page_id, HttpServletResponse key) {
+        try {
+            List<UserResponseDto.findUserByPageIdInShort> response = userService.findUserByPageIdInShort(page_id);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
     @GetMapping("")
     @Operation(summary = "유저 데이터 페이지 별로 가져오기", description = "페이지 번호와, header에 key값을 보내주면 validation check 후에 해당 페이지의 유저 데이터를 가져옵니다.")
     public ResponseEntity<?> findUserByPage(@RequestParam int page_id, HttpServletResponse key) {

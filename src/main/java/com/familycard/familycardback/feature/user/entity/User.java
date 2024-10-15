@@ -54,6 +54,8 @@ public class User {
 
     private Boolean isActive;
 
+    private String lastUsedFranchiseName;
+
     public void updateUserInfo(UserRequestDto.UpdateUserRequestInfo request, Membership membership) {
         this.serialNumber = request.getSerialNumber();
         this.issueDate = request.getIssueDate();

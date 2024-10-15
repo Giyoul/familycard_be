@@ -15,8 +15,19 @@ public class UserResponseDto {
         private Date historyDate;
         private String name;
         private String membershipName;
+        private String franchiseName;
         private int supporterId;
         private String serialNumber;
+
+        public findUserByPageIdInShort(User user) {
+            this.id = user.getId();
+            this.name = user.getName();
+            this.historyDate = user.getIssueDate();
+            this.membershipName = user.getMembership().getMembershipName();
+            this.franchiseName = user.getLastUsedFranchiseName();
+            this.serialNumber = user.getSerialNumber();
+            this.supporterId = user.getSupporterId();
+        }
     }
 
     @Getter

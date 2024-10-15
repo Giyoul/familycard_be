@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findBySerialNumber(String serialNumber);
     List<User> findByOrderByIdDesc(Pageable pageable);
+    List<User> findByIssueDateIsNotNullOrderByIssueDateDesc(Pageable pageable);
 }
