@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,5 +69,14 @@ public class User {
         this.QRURL = request.getQRURL();
         this.isActive = request.getIsActive();
         this.membership = membership;
+    }
+
+    // User 클래스
+    public void addHistory(History history) {
+        if (historyList == null) {
+            historyList = new ArrayList<>();
+        }
+        historyList.add(history);
+        history.setUser(this); // 양방향 관계를 위해 설정
     }
 }
