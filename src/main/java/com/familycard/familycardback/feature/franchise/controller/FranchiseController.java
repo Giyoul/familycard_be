@@ -1,6 +1,7 @@
 package com.familycard.familycardback.feature.franchise.controller;
 
 import com.familycard.familycardback.feature.franchise.dto.request.FranchiseRequestDto;
+import com.familycard.familycardback.feature.franchise.dto.response.FranchiseResponseDto;
 import com.familycard.familycardback.feature.franchise.service.FranchiseService;
 import com.familycard.familycardback.feature.user.service.UserService;
 import com.familycard.familycardback.global.handler.GlobalExceptionHandler;
@@ -46,6 +47,17 @@ public class FranchiseController {
     public ResponseEntity<?> getAllFranchises(HttpServletResponse key) {
         try {
             List<?> response = franchiseService.getAllFranchise();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/component")
+    @Operation(summary = "큐알 리딩 후 이용 메뉴 선택 화면 구성 component 불러오는 기능", description = "찍은 Qr의 Url과 가맹점의 이름을 보내고, 가맹점의 메뉴, 해당 url의 사용자 이름, 금일 사용 횟수, 등급 이름, 등급 할인율, 등급 사용자 하루 최대 사용 가능 횟수를 받아옵니다.")
+    public ResponseEntity<?> getComponentFranchises(HttpServletResponse key, @RequestBody FranchiseRequestDto.GetFranchiseComponent request) {
+        try {
+            FranchiseResponseDto.GetFranchiseComponentResponse response = franchiseService.getFranchiseComponents(request);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

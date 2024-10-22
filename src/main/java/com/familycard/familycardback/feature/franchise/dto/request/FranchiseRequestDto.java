@@ -20,4 +20,11 @@ public class FranchiseRequestDto {
         private String franchiseName;
         private boolean franchiseAffiliated;
     }
+
+    @Getter
+    @Setter
+    public static class GetFranchiseComponent{
+        private String QRURL;
+        private String franchiseName;
+    }
 }

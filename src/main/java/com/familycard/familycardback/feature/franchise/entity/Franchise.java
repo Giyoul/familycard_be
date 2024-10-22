@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,5 +47,14 @@ public class Franchise {
 
     public void changeFranchiseAffiliated(Boolean affiliated) {
         this.franchiseAffiliated = affiliated;
+    }
+
+    // Franchise 클래스
+    public void addHistory(History history) {
+        if (historyList == null) {
+            historyList = new ArrayList<>();
+        }
+        historyList.add(history);
+        history.setFranchise(this); // 양방향 관계를 위해 설정
     }
 }
