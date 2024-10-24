@@ -4,6 +4,7 @@ import com.familycard.familycardback.feature.franchise.dto.response.FranchiseRes
 import com.familycard.familycardback.feature.franchise.entity.Franchise;
 import com.familycard.familycardback.feature.franchise.repository.FranchiseRepository;
 import com.familycard.familycardback.feature.history.dto.request.HistoryRequestDto;
+import com.familycard.familycardback.feature.history.dto.response.HistoryResponseDto;
 import com.familycard.familycardback.feature.history.entity.History;
 import com.familycard.familycardback.feature.history.repository.HistoryRepository;
 import com.familycard.familycardback.feature.menu.dto.response.MenuResponseDto;
@@ -16,9 +17,11 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.ZoneId;
+import java.util.*;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,4 +67,90 @@ public class HistoryService {
             throw new Exception("Invalid QR!");
         }
     }
+
+    public List<HistoryResponseDto.HistoryResponse> getHistoryToday(int page_id, String franchiseName) {
+        Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(franchiseName);
+        int count = 0;
+        if (franchise.isPresent()) {
+            List<History> historyList = franchise.get().getHistoryList();
+
+            LocalDate today = LocalDate.now();
+            int skipCount = (page_id - 1) * 20;
+
+            List<HistoryResponseDto.HistoryResponse> responseList = new ArrayList<>();
+            for (History history : historyList) {
+                LocalDate historyDate = history.getHistoryDate().toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                if (historyDate.equals(today)) {
+                    if (count >= skipCount) {
+                        responseList.add(new HistoryResponseDto.HistoryResponse(
+                                history.getUser().getName(),
+                                history.getHistoryDate(),
+                                history.getUser().getMembership().getMembershipName()
+                        ));
+                        if (responseList.size() == 20) {
+                            break; // 원하는 페이지 크기만큼 채우면 루프 종료
+                        }
+                    }
+                    count++;
+                }
+            }
+            return responseList;
+        }
+        return Collections.emptyList();
+    }
+
+    public List<HistoryResponseDto.HistoryResponse> getHistoryMonth(int page_id, String franchiseName) {
+        Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(franchiseName);
+        if (franchise.isPresent()) {
+            List<History> historyList = franchise.get().getHistoryList();
+
+            LocalDate today = LocalDate.now();
+            int currentYear = today.getYear();
+            int currentMonth = today.getMonthValue();
+
+            return historyList.stream()
+                    .filter(history -> {
+                        LocalDate historyDate = history.getHistoryDate().toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate();
+                        return historyDate.getYear() == currentYear && historyDate.getMonthValue() == currentMonth;
+                    })
+                    .map(history -> new HistoryResponseDto.HistoryResponse(
+                            history.getUser().getName(),
+                            history.getHistoryDate(),
+                            history.getUser().getMembership().getMembershipName()
+                    ))
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    public List<HistoryResponseDto.HistoryResponse> getHistoryWhole(int page_id, String franchiseName) {
+        Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(franchiseName);
+        if (franchise.isPresent()) {
+            List<History> historyList = franchise.get().getHistoryList();
+
+            LocalDate today = LocalDate.now();
+            int currentYear = today.getYear();
+            int currentMonth = today.getMonthValue();
+
+            return historyList.stream()
+                    .filter(history -> {
+                        LocalDate historyDate = history.getHistoryDate().toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate();
+                        return historyDate.getYear() == currentYear && historyDate.getMonthValue() == currentMonth;
+                    })
+                    .map(history -> new HistoryResponseDto.HistoryResponse(
+                            history.getUser().getName(),
+                            history.getHistoryDate(),
+                            history.getUser().getMembership().getMembershipName()
+                    ))
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
 }
