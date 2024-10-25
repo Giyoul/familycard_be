@@ -103,26 +103,35 @@ public class HistoryService {
 
     public List<HistoryResponseDto.HistoryResponse> getHistoryMonth(int page_id, String franchiseName) {
         Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(franchiseName);
+        int count = 0;
         if (franchise.isPresent()) {
             List<History> historyList = franchise.get().getHistoryList();
 
             LocalDate today = LocalDate.now();
             int currentYear = today.getYear();
             int currentMonth = today.getMonthValue();
+            int skipCount = (page_id - 1) * 20;
 
-            return historyList.stream()
-                    .filter(history -> {
-                        LocalDate historyDate = history.getHistoryDate().toInstant()
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDate();
-                        return historyDate.getYear() == currentYear && historyDate.getMonthValue() == currentMonth;
-                    })
-                    .map(history -> new HistoryResponseDto.HistoryResponse(
-                            history.getUser().getName(),
-                            history.getHistoryDate(),
-                            history.getUser().getMembership().getMembershipName()
-                    ))
-                    .collect(Collectors.toList());
+            List<HistoryResponseDto.HistoryResponse> responseList = new ArrayList<>();
+            for (History history : historyList) {
+                LocalDate historyDate = history.getHistoryDate().toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                if (historyDate.getYear() == currentYear && historyDate.getMonthValue() == currentMonth) {
+                    if (count >= skipCount) {
+                        responseList.add(new HistoryResponseDto.HistoryResponse(
+                                history.getUser().getName(),
+                                history.getHistoryDate(),
+                                history.getUser().getMembership().getMembershipName()
+                        ));
+                        if (responseList.size() == 20) {
+                            break; // 원하는 페이지 크기만큼 채우면 루프 종료
+                        }
+                    }
+                    count++;
+                }
+            }
+            return responseList;
         }
         return Collections.emptyList();
     }
