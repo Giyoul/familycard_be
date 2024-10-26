@@ -145,11 +145,11 @@ public class HistoryService {
         if (franchise.isPresent()) {
             List<History> historyList = franchise.get().getHistoryList();
 
-            LocalDate today = LocalDate.now();
             int skipCount = (page_id - 1) * 20;
 
             List<HistoryResponseDto.HistoryResponse> responseList = new ArrayList<>();
-            for (History history : historyList) {
+            for (int i = historyList.size() - 1; i >= 0; i--) {  // 리스트의 마지막 원소부터 탐색
+                History history = historyList.get(i);
                 if (count >= skipCount) {
                     responseList.add(new HistoryResponseDto.HistoryResponse(
                             history.getUser().getName(),
@@ -161,7 +161,6 @@ public class HistoryService {
                     }
                 }
                 count++;
-
             }
             return responseList;
         }
