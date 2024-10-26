@@ -114,7 +114,8 @@ public class HistoryService {
             int skipCount = (page_id - 1) * 20;
 
             List<HistoryResponseDto.HistoryResponse> responseList = new ArrayList<>();
-            for (History history : historyList) {
+            for (int i = historyList.size() - 1; i >= 0; i--) {  // 리스트의 마지막 원소부터 탐색
+                History history = historyList.get(i);
                 LocalDate historyDate = history.getHistoryDate().toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate();
@@ -136,6 +137,7 @@ public class HistoryService {
         }
         return Collections.emptyList();
     }
+
 
     public List<HistoryResponseDto.HistoryResponse> getHistoryWhole(int page_id, String franchiseName) {
         Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(franchiseName);
