@@ -62,4 +62,15 @@ public class HistoryController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
+
+    @GetMapping("/whole/{page_id}")
+    @Operation(summary = "페이지 번호별로 오늘의 history 내역 가져오기", description = "page id와 프렌차이즈 이름을 보내주면, 해당 프렌차이즈의 page 번호의 history 정보를 가져옵니다.")
+    public ResponseEntity<?> getHistoryWhole(@PathVariable int page_id, @RequestParam String franchiseName, HttpServletResponse key) {
+        try {
+            List<HistoryResponseDto.HistoryResponse> response = historyService.getHistoryWhole(page_id, franchiseName);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
 }
