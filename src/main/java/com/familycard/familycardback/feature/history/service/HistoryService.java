@@ -147,9 +147,6 @@ public class HistoryService {
 
             List<HistoryResponseDto.HistoryResponse> responseList = new ArrayList<>();
             for (History history : historyList) {
-                LocalDate historyDate = history.getHistoryDate().toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate();
                 if (count >= skipCount) {
                     responseList.add(new HistoryResponseDto.HistoryResponse(
                             history.getUser().getName(),
