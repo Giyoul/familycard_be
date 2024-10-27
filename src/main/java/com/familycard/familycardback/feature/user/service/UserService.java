@@ -63,4 +63,15 @@ public class UserService {
                 .toList();
     }
 
+    public List<UserResponseDto.makeUserCard> findUserBySerialList(UserRequestDto.serialNumberList serialNumberList) {
+        List<UserResponseDto.makeUserCard> responseDtoList = new ArrayList<>();
+        for(String serialNumber : serialNumberList.getSerialNumberList()) {
+            Optional<User> optionalUser = userRepository.findBySerialNumber(serialNumber);
+            if(optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                responseDtoList.add(new UserResponseDto.makeUserCard(user.getName(), user.getBirthDay(), user.getQRURL()));
+            }
+        }
+        return responseDtoList;
+    }
 }

@@ -64,4 +64,18 @@ public class UserResponseDto {
 
         }
     }
+
+    @Getter
+    @Setter
+    public static class makeUserCard {
+        String name;
+        Date birthDay;
+        String QRURL;
+
+        public makeUserCard(String name, Date birthDay, String QRURL) {
+            this.name = name;
+            this.birthDay = birthDay;
+            this.QRURL = QRURL;
+        }
+    }
 }

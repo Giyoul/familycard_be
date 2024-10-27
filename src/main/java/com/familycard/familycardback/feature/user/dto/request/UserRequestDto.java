@@ -28,4 +28,10 @@ public class UserRequestDto {
         private String membershipName;
         private Boolean isActive;
     }
+
+    @Getter
+    @Setter
+    public static class serialNumberList {
+        private List<String> serialNumberList;
+    }
 }
