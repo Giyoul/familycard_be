@@ -73,4 +73,15 @@ public class HistoryController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
+
+    @GetMapping("/franchise")
+    @Operation(summary = "가맹점의 history를 엑셀로 뽑을 때 쓰는 api", description = "가맹점의 이름을 보내주면, 해당 가맹점의 모든 history를 전부 가져옵니다.")
+    public ResponseEntity<?> getHistoryFranchise(@RequestParam String franchiseName, HttpServletResponse key) {
+        try {
+            List<HistoryResponseDto.HistoryResponse> response = historyService.getFranchiseHistory(franchiseName);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
 }

@@ -167,4 +167,20 @@ public class HistoryService {
         return Collections.emptyList();
     }
 
+    public List<HistoryResponseDto.HistoryResponse> getFranchiseHistory(String franchiseName) {
+        Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(franchiseName);
+        if (franchise.isPresent()) {
+            List<History> historyList = franchise.get().getHistoryList();
+
+            return historyList.stream().map(
+                    history -> new HistoryResponseDto.HistoryResponse(
+                            history.getUser().getName(),
+                            history.getHistoryDate(),
+                            history.getUser().getMembership().getMembershipName()
+                    )
+            ).toList();
+        }
+        return Collections.emptyList();
+    }
+
 }
