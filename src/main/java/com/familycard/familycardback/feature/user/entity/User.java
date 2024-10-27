@@ -46,7 +46,6 @@ public class User {
     private String supporterName;
 
     private String contactNumber;
-
     private String photoFileName;
 
     private Date birthDay;

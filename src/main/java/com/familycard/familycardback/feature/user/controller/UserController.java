@@ -65,7 +65,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/card")
+    @PostMapping("/card")
     @Operation(summary = "패밀리 카드를 발급할 유저의 일련번호를 list로 보내고, 유저의 이름, 생일, qr의 url 번호를 받아옵니다.")
     public ResponseEntity<?> getUserByCard(@RequestBody UserRequestDto.serialNumberList serialNumberList, HttpServletResponse key) {
         try {

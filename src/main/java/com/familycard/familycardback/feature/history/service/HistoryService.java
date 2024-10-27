@@ -36,8 +36,31 @@ public class HistoryService {
         Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(request.getFranchiseName());
         Optional<Menu> menu = menuRepository.findByMenuName(request.getMenuName());
         if (user.isPresent() && franchise.isPresent() && menu.isPresent()) {
-            History history = new History(franchise.get(), user.get(), menu.get());
-            historyRepository.save(history);
+            // user의 historyList에서 오늘 날짜와 일치하는 항목만 카운트
+            List<History> historyList = user.get().getHistoryList();
+            LocalDate today = LocalDate.now();
+            long todayHistoryCount = 0;
+
+            // 맨 뒤에서부터 탐색
+            for (int i = historyList.size() - 1; i >= 0; i--) {
+                History history = historyList.get(i);
+                LocalDate historyDate = history.getHistoryDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                // historyDate와 오늘 날짜가 일치하는지 확인
+                if (historyDate.equals(today)) {
+                    todayHistoryCount++;
+                } else {
+                    break;
+                }
+            }
+
+            // 오늘의 history가 2보다 작으면 추가, 아니면 예외 발생
+            if (todayHistoryCount < user.get().getMembership().getMembershipDiscountCount()) {
+                History history = new History(franchise.get(), user.get(), menu.get());
+                historyRepository.save(history);
+            } else {
+                throw new Exception("Today's history limit reached!");
+            }
         } else {
             throw new Exception("There is such name user or franchise or menu!");
         }

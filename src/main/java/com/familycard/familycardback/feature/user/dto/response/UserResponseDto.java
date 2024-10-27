@@ -23,7 +23,11 @@ public class UserResponseDto {
             this.id = user.getId();
             this.name = user.getName();
             this.historyDate = user.getIssueDate();
-            this.membershipName = user.getMembership().getMembershipName();
+            if (user.getMembership() != null) {
+                this.membershipName = user.getMembership().getMembershipName();
+            } else {
+                this.membershipName = "";
+            }
             this.franchiseName = user.getLastUsedFranchiseName();
             this.serialNumber = user.getSerialNumber();
             this.supporterId = user.getSupporterId();
