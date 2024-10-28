@@ -57,6 +57,9 @@ public class HistoryService {
             // 오늘의 history가 2보다 작으면 추가, 아니면 예외 발생
             if (todayHistoryCount < user.get().getMembership().getMembershipDiscountCount()) {
                 History history = new History(franchise.get(), user.get(), menu.get());
+                User user1 = user.get();
+                user1.updateUserLastUsedDateAndName(new Date(), franchise.get().getFranchiseName());
+                userRepository.save(user1);
                 historyRepository.save(history);
             } else {
                 throw new Exception("Today's history limit reached!");

@@ -22,7 +22,7 @@ public class UserResponseDto {
         public findUserByPageIdInShort(User user) {
             this.id = user.getId();
             this.name = user.getName();
-            this.historyDate = user.getIssueDate();
+            this.historyDate = user.getLastUsedDate();
             if (user.getMembership() != null) {
                 this.membershipName = user.getMembership().getMembershipName();
             } else {

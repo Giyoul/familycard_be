@@ -26,7 +26,7 @@ public class UserService {
     public List<UserResponseDto.findUserByPageIdInShort> findUserByPageIdInShort(int page_id) {
         int pageSize = 20; // 페이지당 20명씩
         Pageable pageable = PageRequest.of(page_id - 1, pageSize, Sort.by("issueDate").descending());
-        List<User> userList = userRepository.findByIssueDateIsNotNullOrderByIssueDateDesc(pageable);
+        List<User> userList = userRepository.findByIssueDateIsNotNullOrderByLastUsedDateDesc(pageable);
         return userList.stream()
                 .map(UserResponseDto.findUserByPageIdInShort::new)
                 .toList();

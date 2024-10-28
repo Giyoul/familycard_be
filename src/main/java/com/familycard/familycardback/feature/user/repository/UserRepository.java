@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findBySerialNumber(String serialNumber);
     List<User> findByOrderByIdDesc(Pageable pageable);
-    List<User> findByIssueDateIsNotNullOrderByIssueDateDesc(Pageable pageable);
+    List<User> findByIssueDateIsNotNullOrderByLastUsedDateDesc(Pageable pageable);
     Optional<User> findByQRURL(String qrUrl);
     Optional<User> findByName(String name);
 }

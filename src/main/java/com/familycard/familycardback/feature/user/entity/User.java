@@ -2,16 +2,13 @@ package com.familycard.familycardback.feature.user.entity;
 
 import com.familycard.familycardback.feature.history.entity.History;
 import com.familycard.familycardback.feature.membership.entity.Membership;
-import com.familycard.familycardback.feature.menu.entity.Menu;
 import com.familycard.familycardback.feature.user.dto.request.UserRequestDto;
-import com.familycard.familycardback.feature.user.repository.UserRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +53,8 @@ public class User {
 
     private String lastUsedFranchiseName;
 
+    private Date lastUsedDate;
+
     public void updateUserInfo(UserRequestDto.UpdateUserRequestInfo request, Membership membership) {
         this.serialNumber = request.getSerialNumber();
         this.issueDate = request.getIssueDate();
@@ -70,12 +69,8 @@ public class User {
         this.membership = membership;
     }
 
-    // User 클래스
-    public void addHistory(History history) {
-        if (historyList == null) {
-            historyList = new ArrayList<>();
-        }
-        historyList.add(history);
-        history.setUser(this); // 양방향 관계를 위해 설정
+    public void updateUserLastUsedDateAndName(Date lastUsedDate, String lastUsedFranchiseName) {
+        this.lastUsedDate = lastUsedDate;
+        this.lastUsedFranchiseName = lastUsedFranchiseName;
     }
 }
