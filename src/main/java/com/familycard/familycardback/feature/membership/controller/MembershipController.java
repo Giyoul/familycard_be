@@ -8,5 +8,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/membership")
 public class MembershipController {
-
 }
