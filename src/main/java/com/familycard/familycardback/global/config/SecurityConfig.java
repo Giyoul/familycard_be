@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
                         .anyRequest().authenticated()
-                );
+                ).requiresChannel((channel) -> channel.anyRequest().requiresSecure()); // HTTP 요청을 HTTPS로 리디렉션
 
         return http.build();
     }
