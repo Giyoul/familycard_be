@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .cors((cors) -> cors.configurationSource(corsConfigurationSource())) // Single configuration source
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/test", "/swagger-ui/**", "/v3/api-docs/**", "/api/login", "/api/register", "/error", "/api/health").permitAll()
+                        .requestMatchers("/test", "/swagger-ui/**", "/v3/api-docs/**", "/api/login", "/api/register", "/error", "/api/health", "/actuator/health").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/api/**").permitAll()

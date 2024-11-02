@@ -20,4 +20,17 @@ public class HistoryResponseDto {
         }
     }
 
+    @Getter
+    @Setter
+    public static class HistoryWithMenuResponse{
+        String menuName;
+        Date historyDate;
+        String menuPrice;
+        public HistoryWithMenuResponse(String menuName, Date historyDate, String menuPrice) {
+            this.menuName = menuName;
+            this.historyDate = historyDate;
+            this.menuPrice = menuPrice;
+        }
+    }
+
 }

@@ -35,41 +35,46 @@ public class HistoryService {
         Optional<User> user = userRepository.findByName(request.getName());
         Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(request.getFranchiseName());
         Optional<Menu> menu = menuRepository.findByMenuName(request.getMenuName());
-        if (user.isPresent() && franchise.isPresent() && menu.isPresent()) {
-            // user의 historyList에서 오늘 날짜와 일치하는 항목만 카운트
-            List<History> historyList = user.get().getHistoryList();
-            LocalDate today = LocalDate.now();
-            long todayHistoryCount = 0;
+        if(user.isEmpty()){
+            throw new Exception("User not found");
+        }
+        if(franchise.isEmpty()){
+            throw new Exception("Franchise not found");
+        }
+        if(menu.isEmpty()){
+            throw new Exception("Menu not found");
+        }
+        // user의 historyList에서 오늘 날짜와 일치하는 항목만 카운트
+        List<History> historyList = user.get().getHistoryList();
+        LocalDate today = LocalDate.now();
+        long todayHistoryCount = 0;
 
-            // 맨 뒤에서부터 탐색
-            for (int i = historyList.size() - 1; i >= 0; i--) {
-                History history = historyList.get(i);
-                LocalDate historyDate = history.getHistoryDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        // 맨 뒤에서부터 탐색
+        for (int i = historyList.size() - 1; i >= 0; i--) {
+            History history = historyList.get(i);
+            LocalDate historyDate = history.getHistoryDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                // historyDate와 오늘 날짜가 일치하는지 확인
-                if (historyDate.equals(today)) {
-                    todayHistoryCount++;
-                } else {
-                    break;
-                }
-            }
-
-            // 오늘의 history가 2보다 작으면 추가, 아니면 예외 발생
-            if (todayHistoryCount < user.get().getMembership().getMembershipDiscountCount()) {
-                History history = new History(franchise.get(), user.get(), menu.get());
-                User user1 = user.get();
-                user1.updateUserLastUsedDateAndName(new Date(), franchise.get().getFranchiseName());
-                userRepository.save(user1);
-                historyRepository.save(history);
+            // historyDate와 오늘 날짜가 일치하는지 확인
+            if (historyDate.equals(today)) {
+                todayHistoryCount++;
             } else {
-                throw new Exception("Today's history limit reached!");
+                break;
             }
+        }
+
+        // 오늘의 history가 2보다 작으면 추가, 아니면 예외 발생
+        if (todayHistoryCount < user.get().getMembership().getMembershipDiscountCount()) {
+            History history = new History(franchise.get(), user.get(), menu.get());
+            User user1 = user.get();
+            user1.updateUserLastUsedDateAndName(new Date(), franchise.get().getFranchiseName());
+            userRepository.save(user1);
+            historyRepository.save(history);
         } else {
-            throw new Exception("There is such name user or franchise or menu!");
+            throw new Exception("Today's history limit reached!");
         }
     }
 
-    public FranchiseResponseDto.GetFranchiseComponentResponse getHistory(String userName, String franchiseName) throws Exception {
+    public FranchiseResponseDto.GetFranchiseComponentHistoryResponse getHistory(String userName, String franchiseName) throws Exception {
         Optional<User> user = userRepository.findByName(userName);
         if (!user.get().getIsActive()){
             throw new Exception("맴버십에 등록되어 있지 않은 사용자입니다!");
@@ -85,10 +90,10 @@ public class HistoryService {
                     .toList();
 
             int todayUsageCount = todaysHistories.size();
-            List<MenuResponseDto.franchiseMenuComponent> menuDtoList = todaysHistories.stream().map(
-                    history -> new MenuResponseDto.franchiseMenuComponent(history.getHistoryMenu(), menuRepository.findById(history.getHistoryMenuId()).get().getMenuPrice())
+            List<HistoryResponseDto.HistoryWithMenuResponse> historyWithMenuResponseList = todaysHistories.stream().map(
+                    history -> new HistoryResponseDto.HistoryWithMenuResponse(history.getHistoryMenu(), history.getHistoryDate(), menuRepository.findById(history.getHistoryMenuId()).get().getMenuPrice())
             ).toList();
-            return new FranchiseResponseDto.GetFranchiseComponentResponse(user.get(), todayUsageCount, menuDtoList);
+            return new FranchiseResponseDto.GetFranchiseComponentHistoryResponse(user.get(), todayUsageCount, historyWithMenuResponseList);
         } else {
             throw new Exception("Invalid QR!");
         }

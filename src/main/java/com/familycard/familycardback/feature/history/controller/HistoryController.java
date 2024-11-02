@@ -34,7 +34,7 @@ public class HistoryController {
     @Operation(summary = "큐알 리딩 후에 메뉴 선택 했을 때 뜨는 화면", description = "사용자의 이름과 프렌타이즈 이름을 보내고, 유저가 오늘 해당 프렌차이즈에서 먹은 메뉴를 가져옵니다.")
     public ResponseEntity<?> getHistory(HttpServletResponse key, @RequestParam String userName, @RequestParam String franchiseName) {
         try {
-            FranchiseResponseDto.GetFranchiseComponentResponse response = historyService.getHistory(userName, franchiseName);
+            FranchiseResponseDto.GetFranchiseComponentHistoryResponse response = historyService.getHistory(userName, franchiseName);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
