@@ -13,12 +13,15 @@ public class SwaggerConfig {
     @Value("${familyCard.server.domain}")
     private String domain;
 
+    @Value("${familyCard.server.domain1}")
+    private String domain1;
+
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .addServersItem(new Server().url("http://localhost:8080"))
-                .addServersItem(new Server().url("http://172.30.1.95:8080"))
                 .addServersItem(new Server().url(domain))
+                .addServersItem(new Server().url(domain1))
                 .info(new Info()
                         .title("Family Card backend API")
                         .description("패밀리 카드 api 명세")
