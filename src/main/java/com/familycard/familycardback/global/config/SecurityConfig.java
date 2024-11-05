@@ -23,6 +23,10 @@ public class SecurityConfig {
     @Value("${familyCard.client.domain}")
     private String clientDomain;
 
+    @Value("${familyCard.server.domain1}")
+    private String serverDomain2;
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -49,11 +53,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 //        configuration.addAllowedOrigin("http://localhost:3000"); // 허용할 도메인 추가
-//        configuration.addAllowedOrigin("http://localhost:8080");
 //        configuration.addAllowedOrigin("http://localhost:3001");
-//        configuration.addAllowedOrigin("http://172.30.1.95:8080");
 //        configuration.addAllowedOrigin(serverDomain); // 환경 변수로 받은 도메인 추가
 //        configuration.addAllowedOrigin(clientDomain); // 환경 변수로 받은 도메인 추가
+//        configuration.addAllowedOrigin(serverDomain2);
 //        configuration.addAllowedMethod("*"); // 모든 메서드 허용
 //        configuration.addAllowedHeader("*"); // 모든 헤더 허용
 //        configuration.setAllowCredentials(true); // 자격 증명 허용
