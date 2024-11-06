@@ -40,7 +40,7 @@ public class Franchise {
         this.franchiseName = request.getFranchiseName();
         // 메뉴 리스트를 받아서 각각의 Menu 객체로 변환하여 추가
         this.menuList = request.getMenuList().stream()
-                .map(menuInfo -> new Menu(this, menuInfo.getMenuName(), menuInfo.getMenuPrice()))
+                .map(menuInfo -> new Menu(this, menuInfo.getMenuName(), menuInfo.getMenuPrice(), menuInfo.getMenuEnable()))
                 .collect(Collectors.toList());
         this.franchiseAffiliated = true;
     }

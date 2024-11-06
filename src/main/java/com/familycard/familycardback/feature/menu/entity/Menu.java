@@ -28,9 +28,18 @@ public class Menu {
 
     private String menuPrice;
 
-    public Menu(Franchise franchise, String menuName, String menuPrice) {
+    private Boolean menuEnable;
+
+    public Menu(Franchise franchise, String menuName, String menuPrice, boolean menuEnable) {
         this.franchise = franchise;
         this.menuName = menuName;
         this.menuPrice = menuPrice;
+        this.menuEnable = menuEnable;
+    }
+
+    public void updateMenuInfo(String menuName, String menuPrice, boolean menuEnable) {
+        this.menuName = menuName;
+        this.menuPrice = menuPrice;
+        this.menuEnable = menuEnable;
     }
 }
