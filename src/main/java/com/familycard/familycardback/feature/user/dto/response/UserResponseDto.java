@@ -1,5 +1,6 @@
 package com.familycard.familycardback.feature.user.dto.response;
 
+import com.familycard.familycardback.feature.history.entity.History;
 import com.familycard.familycardback.feature.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,16 +20,16 @@ public class UserResponseDto {
         private int supporterId;
         private String serialNumber;
 
-        public findUserByPageIdInShort(User user) {
+        public findUserByPageIdInShort(User user, History history) {
             this.id = user.getId();
             this.name = user.getName();
-            this.historyDate = user.getLastUsedDate();
+            this.historyDate = history.getHistoryDate();
             if (user.getMembership() != null) {
                 this.membershipName = user.getMembership().getMembershipName();
             } else {
                 this.membershipName = "";
             }
-            this.franchiseName = user.getLastUsedFranchiseName();
+            this.franchiseName = history.getFranchise().getFranchiseName();
             this.serialNumber = user.getSerialNumber();
             this.supporterId = user.getSupporterId();
         }

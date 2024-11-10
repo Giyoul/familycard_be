@@ -55,7 +55,7 @@ public class HistoryService {
             LocalDate historyDate = history.getHistoryDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
             // historyDate와 오늘 날짜가 일치하는지 확인
-            if (historyDate.equals(today)) {
+            if (historyDate.equals(today) && history.getFranchise().getFranchiseName().equals(franchise.get().getFranchiseName())) {
                 todayHistoryCount++;
             } else {
                 break;
@@ -76,17 +76,24 @@ public class HistoryService {
 
     public FranchiseResponseDto.GetFranchiseComponentHistoryResponse getHistory(String userName, String franchiseName) throws Exception {
         Optional<User> user = userRepository.findByName(userName);
+        Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(franchiseName);
         if (!user.get().getIsActive()){
             throw new Exception("맴버십에 등록되어 있지 않은 사용자입니다!");
         }
         if (user.isPresent()) {
+            if (!franchise.isPresent()) {
+                throw new Exception("There is no such name Franchise!");
+            }
             // 오늘 날짜를 Date 형식으로 가져오기
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date today = sdf.parse(sdf.format(new Date()));  // 시간을 제외하고 오늘 날짜만 남김
 
             // historyDate가 오늘 날짜와 같은지 비교
             java.util.List<History> todaysHistories = user.get().getHistoryList().stream()
-                    .filter(history -> sdf.format(history.getHistoryDate()).equals(sdf.format(today)))
+                    .filter(history -> sdf.format(history.getHistoryDate()).equals(sdf.format(today))
+                    &&
+                    franchise.get().getFranchiseName().equals(history.getFranchise().getFranchiseName())
+                    )
                     .toList();
 
             int todayUsageCount = todaysHistories.size();

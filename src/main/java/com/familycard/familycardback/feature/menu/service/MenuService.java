@@ -3,6 +3,7 @@ package com.familycard.familycardback.feature.menu.service;
 import com.familycard.familycardback.feature.franchise.entity.Franchise;
 import com.familycard.familycardback.feature.franchise.repository.FranchiseRepository;
 import com.familycard.familycardback.feature.menu.dto.request.MenuRequestDto;
+import com.familycard.familycardback.feature.menu.dto.response.MenuResponseDto;
 import com.familycard.familycardback.feature.menu.entity.Menu;
 import com.familycard.familycardback.feature.menu.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,18 @@ public class MenuService {
         } else {
             throw new Exception("There is no such franchise!");
         }
+    }
 
+    public List<MenuResponseDto.franchiseMenuComponent> getAllMenus(String franchiseName) throws Exception{
+        Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(franchiseName);
+
+        if (franchise.isPresent()) {
+            List<Menu> menuList = franchise.get().getMenuList();
+            return menuList.stream().map(menu ->
+                    new MenuResponseDto.franchiseMenuComponent(menu.getMenuName(), menu.getMenuPrice(), menu.getMenuEnable())
+            ).toList();
+        } else {
+            throw new Exception("There is no such franchise!");
+        }
     }
 }

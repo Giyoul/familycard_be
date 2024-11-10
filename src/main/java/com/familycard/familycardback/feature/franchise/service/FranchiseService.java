@@ -54,23 +54,31 @@ public class FranchiseService {
 
     public FranchiseResponseDto.GetFranchiseComponentResponse getFranchiseComponents(FranchiseRequestDto.GetFranchiseComponent request) throws Exception {
         Optional<User> user = userRepository.findByQRURL(request.getQRURL());
+        Optional<Franchise> franchise = franchiseRepository.findByFranchiseName(request.getFranchiseName());
         if (!user.get().getIsActive()){
             throw new Exception("맴버십에 등록되어 있지 않은 사용자입니다!");
         }
         if (user.isPresent()) {
+            if (!franchise.isPresent()) {
+                throw new Exception("There is no such name Franchise!");
+            }
             // 오늘 날짜를 Date 형식으로 가져오기
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date today = sdf.parse(sdf.format(new Date()));  // 시간을 제외하고 오늘 날짜만 남김
 
             // historyDate가 오늘 날짜와 같은지 비교
             List<History> todaysHistories = user.get().getHistoryList().stream()
-                    .filter(history -> sdf.format(history.getHistoryDate()).equals(sdf.format(today)))
+                    .filter(history ->
+                            sdf.format(history.getHistoryDate()).equals(sdf.format(today))
+                            &&
+                            history.getFranchise().getFranchiseName().equals(franchise.get().getFranchiseName())
+                    )
                     .toList();
 
             int todayUsageCount = todaysHistories.size();
             List<Menu> menuList = franchiseRepository.findByFranchiseName(request.getFranchiseName()).get().getMenuList();
             List<MenuResponseDto.franchiseMenuComponent> menuDtoList = menuList.stream().map(
-                    menu -> new MenuResponseDto.franchiseMenuComponent(menu.getMenuName(), menu.getMenuPrice())
+                    menu -> new MenuResponseDto.franchiseMenuComponent(menu.getMenuName(), menu.getMenuPrice(), menu.getMenuEnable())
             ).toList();
             return new FranchiseResponseDto.GetFranchiseComponentResponse(user.get(), todayUsageCount, menuDtoList);
         } else {

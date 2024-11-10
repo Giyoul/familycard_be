@@ -9,10 +9,12 @@ public class MenuResponseDto {
     public static class franchiseMenuComponent{
         private String menuName;
         private String menuPrice;
+        private boolean menuEnable;
 
-        public franchiseMenuComponent(String menuName, String menuPrice) {
+        public franchiseMenuComponent(String menuName, String menuPrice, boolean menuEnable) {
             this.menuName = menuName;
             this.menuPrice = menuPrice;
+            this.menuEnable = menuEnable;
         }
     }
 }

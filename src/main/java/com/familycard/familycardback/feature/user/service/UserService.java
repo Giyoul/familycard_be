@@ -1,5 +1,7 @@
 package com.familycard.familycardback.feature.user.service;
 
+import com.familycard.familycardback.feature.history.entity.History;
+import com.familycard.familycardback.feature.history.repository.HistoryRepository;
 import com.familycard.familycardback.feature.membership.entity.Membership;
 import com.familycard.familycardback.feature.membership.repository.MembershipRepository;
 import com.familycard.familycardback.feature.user.dto.request.UserRequestDto;
@@ -7,6 +9,7 @@ import com.familycard.familycardback.feature.user.dto.response.UserResponseDto;
 import com.familycard.familycardback.feature.user.entity.User;
 import com.familycard.familycardback.feature.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,14 +25,15 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
     private final MembershipRepository membershipRepository;
+    private final HistoryRepository historyRepository;
 
     public List<UserResponseDto.findUserByPageIdInShort> findUserByPageIdInShort(int page_id) {
         int pageSize = 20; // 페이지당 20명씩
-        Pageable pageable = PageRequest.of(page_id - 1, pageSize, Sort.by("issueDate").descending());
-        List<User> userList = userRepository.findByIssueDateIsNotNullOrderByLastUsedDateDesc(pageable);
-        return userList.stream()
-                .map(UserResponseDto.findUserByPageIdInShort::new)
-                .toList();
+        Pageable pageable = PageRequest.of(page_id - 1, pageSize);
+        Page<History> historyPage = historyRepository.findAllByOrderByHistoryDateDesc(pageable);
+        return historyPage.stream().map(history ->
+                new UserResponseDto.findUserByPageIdInShort(history.getUser(), history)
+                ).toList();
     }
 
     public void updateUserBySerialNumber(UserRequestDto.UpdateUserRequest request) throws Exception{
@@ -56,7 +60,7 @@ public class UserService {
 
     public List<UserResponseDto.findUserByPageId> findUserByPageId(int page_id) {
         int page = page_id - 1;
-        Pageable pageable = PageRequest.of(page, 4);
+        Pageable pageable = PageRequest.of(page, 20);
         List<User> userList = userRepository.findByOrderByIdDesc(pageable);
         return userList.stream()
                 .map(UserResponseDto.findUserByPageId::new)
